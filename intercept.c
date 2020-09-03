@@ -100,41 +100,4 @@ module_init(kill_init);
 module_exit(kill_restore);
 
 
-/*
- * first mission:
- * 1) find the address of the system call table by using an internal private kernel function
- *
- * 2) having the adress of the system call table we would want to change the entry of the sys_kill() to
- * point to out own-wriitten function, but there is one more problem!
- */
 
-/*
-turns on the R/W flag for addr.
-
-* second mission:
-* the kernel protects itsself by turning off the R/W flag in(virtual) pages that contain static read-only structurs
-* like our beloved system call table,therefore we will not be able to upadte it.
-* modify the R\W permission by implementing allow_rw function,dont forget to disallow the R\W permissions when removing
-* the module (i.e calling rrmod)
-void allow_rw(unsigned long addr){
- */
-
-/*
-This function updates the entry of the kill system call in the system call table to point to our_syscall.
-* 1)when our module is loaded(insmod),it will hijack the system call by pointing the ystem call table entry
-* occupied by the original sys_kill pointer to our self-written function.
-* 2)we will also have to save the original function pointer to be able to restore it later, when our module is unloaded
-//(rmmod)
- */
-
-/*
-This function is called when loading the module (i.e insmod <module_name>)
-* shelly might want to save programs other the "Bill" in the future,therefore the module will
- * depend on a command-line string argument called "program_name".
- *
- * example for a possible loading command for our module could be :
- * " insmod intercept.ko program_name"some_other_program" "
- *  program_name is optinal where the default value is set to "Bill"
- *
- *  Note: we want to block the signal SIGKILL and allow other signal to be sent to "Bill"
- */
